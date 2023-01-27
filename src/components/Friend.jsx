@@ -38,7 +38,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
       dispatch(setFriends({ friends: data }));
     } catch (error) {
       console.error(
-        `Error (${error.name}) in Friend.jsx from patchFriend()! ${error.message} `
+        `Error (${error.name}) in Friend.jsx/patchFriend()! ${error.message} `
       );
     }
   };

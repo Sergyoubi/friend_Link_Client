@@ -15,7 +15,6 @@ import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 import { useState } from "react";
-import { useEffect } from "react";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -53,7 +52,6 @@ const Form = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
-  const [url, setUrl] = useState(null);
 
   const register = async (values, onSubmitProps) => {
     // this allows us to send form info with image
@@ -63,10 +61,13 @@ const Form = () => {
     }
     formData.append("picturePath", values.picture.name);
 
-    const savedUserResponse = await fetch(`${url}/auth/register`, {
-      method: "POST",
-      body: formData,
-    });
+    const savedUserResponse = await fetch(
+      "http://localhost:5000/auth/register",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
     const savedUser = await savedUserResponse.json();
     onSubmitProps.resetForm();
 
@@ -76,7 +77,7 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch(`${url}/auth/login`, {
+    const loggedInResponse = await fetch("http://localhost:5000/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
@@ -100,10 +101,6 @@ const Form = () => {
     if (isLogin) await login(values, onSubmitProps);
     if (isRegister) await register(values, onSubmitProps);
   };
-
-  useEffect(() => {
-    setUrl("http://localhost:5000");
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Formik
