@@ -17,7 +17,7 @@ import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 import UserImage from "components/UserImage";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 
@@ -32,11 +32,6 @@ const MyPostWidget = ({ picturePath }) => {
   const token = useSelector((state) => state.token);
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
-  const [url, setUrl] = useState(null);
-
-  useEffect(() => {
-    setUrl("https://erin-lucky-mite.cyclic.app");
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handlePost = async () => {
     try {
@@ -49,7 +44,7 @@ const MyPostWidget = ({ picturePath }) => {
         formData.append("postPicturePath", image.name);
       }
 
-      const response = await fetch(`${url}/posts`, {
+      const response = await fetch("http://localhost:5000/posts", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

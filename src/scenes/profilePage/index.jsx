@@ -11,20 +11,15 @@ const ProfilePage = () => {
   const { userId } = useParams();
   const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-  const [url, setUrl] = useState(null);
 
   const getUser = async () => {
-    const response = await fetch(`${url}/users/${userId}`, {
+    const response = await fetch(`http://localhost:5000/users/${userId}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
     setUser(data);
   };
-
-  useEffect(() => {
-    setUrl("https://erin-lucky-mite.cyclic.app");
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     getUser();

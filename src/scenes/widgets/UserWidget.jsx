@@ -6,23 +6,22 @@ import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 // This is where the user info are displayed
 const UserWidget = ({ userId, picturePath }) => {
-  const [user, setUser] = useState(null);
   const { palette } = useTheme();
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const token = useSelector((state) => state.token);
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
-  const [url, setUrl] = useState(null);
 
   const getUserInfo = async () => {
     try {
-      const response = await fetch(`${url}/users/${userId}`, {
+      const response = await fetch(`http://localhost:5000/users/${userId}`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -34,10 +33,6 @@ const UserWidget = ({ userId, picturePath }) => {
       );
     }
   };
-
-  useEffect(() => {
-    setUrl("https://erin-lucky-mite.cyclic.app");
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     getUserInfo();

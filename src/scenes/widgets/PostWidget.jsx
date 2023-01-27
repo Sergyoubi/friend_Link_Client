@@ -14,7 +14,7 @@ import {
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
 
@@ -35,7 +35,6 @@ const PostWidget = ({
   const token = useSelector((state) => state.token);
   const { firstName, lastName } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [url, setUrl] = useState(null);
   // check if the loggedin user has liked a particular post or not. will return true or false
   const isPostLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
@@ -47,14 +46,17 @@ const PostWidget = ({
   // fn() to increase/decrease the number of a One Post's Like
   const patchLike = async () => {
     try {
-      const response = await fetch(`${url}/posts/${postId}/like`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: loggedInUserId }),
-      });
+      const response = await fetch(
+        `http://localhost:5000/posts/${postId}/like`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: loggedInUserId }),
+        }
+      );
       const updatedPost = await response.json();
       dispatch(setPost({ post: updatedPost }));
     } catch (error) {
@@ -66,17 +68,20 @@ const PostWidget = ({
 
   const handleComment = async () => {
     try {
-      const response = await fetch(`${url}/posts/${postId}/comment`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          comment: comment,
-          name: `${firstName} ${lastName}`,
-        }),
-      });
+      const response = await fetch(
+        `http://localhost:5000/posts/${postId}/comment`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            comment: comment,
+            name: `${firstName} ${lastName}`,
+          }),
+        }
+      );
       const updatedPost = await response.json();
       dispatch(setPost({ post: updatedPost }));
       setComment("");
@@ -86,10 +91,6 @@ const PostWidget = ({
       );
     }
   };
-
-  useEffect(() => {
-    setUrl("https://erin-lucky-mite.cyclic.app");
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <WidgetWrapper m="2rem 0">
@@ -108,7 +109,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`${url}/assets/${postPicturePath}`}
+          src={`http://localhost:5000/assets/${postPicturePath}`}
         />
       ) : null}
       <FlexBetween mt="0.25rem">

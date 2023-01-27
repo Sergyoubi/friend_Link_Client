@@ -1,6 +1,5 @@
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setFriends } from "state";
@@ -18,7 +17,6 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
-  const [url, setUrl] = useState(null);
 
   //to control which of add or remove(friend) button to show
   const isFriend = friends.find((friend) => friend._id === friendId);
@@ -26,13 +24,16 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   //function to add/remove a person in friend list
   const patchFriend = async () => {
     try {
-      const response = await fetch(`${url}/users/${_id}/${friendId}`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `http://localhost:5000/users/${_id}/${friendId}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       dispatch(setFriends({ friends: data }));
     } catch (error) {
@@ -41,10 +42,6 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
       );
     }
   };
-
-  useEffect(() => {
-    setUrl("https://erin-lucky-mite.cyclic.app");
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <FlexBetween>
