@@ -11,7 +11,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   //get all post
   const getPosts = async () => {
     try {
-      const response = await fetch("http://localhost:5000/posts", {
+      const response = await fetch("https://erin-lucky-mite.cyclic.app/posts", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -28,7 +28,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const getUserPosts = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/posts/${userId}/posts`,
+        `https://erin-lucky-mite.cyclic.app/posts/${userId}/posts`,
         {
           method: "GET",
           headers: {

@@ -21,10 +21,13 @@ const UserWidget = ({ userId, picturePath }) => {
 
   const getUserInfo = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/users/${userId}`, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        `https://erin-lucky-mite.cyclic.app/users/${userId}`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const user = await response.json();
       setUser(user);
     } catch (error) {
@@ -70,9 +73,6 @@ const UserWidget = ({ userId, picturePath }) => {
             <Typography color={medium}>{friends.length} friends</Typography>
           </Box>
         </FlexBetween>
-        {/* 
-        <ManageAccountsOutlined />
-        */}
       </FlexBetween>
 
       <Divider />
@@ -123,9 +123,6 @@ const UserWidget = ({ userId, picturePath }) => {
               <Typography color={medium}>Social Network</Typography>
             </Box>
           </FlexBetween>
-          {/* 
-          <EditOutlined sx={{ color: main }} />
-          */}
         </FlexBetween>
 
         <FlexBetween gap="1rem">
@@ -138,9 +135,6 @@ const UserWidget = ({ userId, picturePath }) => {
               <Typography color={medium}>Network Platform</Typography>
             </Box>
           </FlexBetween>
-          {/* 
-          <EditOutlined sx={{ color: main }} />
-          */}
         </FlexBetween>
       </Box>
     </WidgetWrapper>

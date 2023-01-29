@@ -59,7 +59,7 @@ const Form = () => {
     formData.append("picturePath", "user.png");
 
     const savedUserResponse = await fetch(
-      "http://localhost:5000/auth/register",
+      "https://erin-lucky-mite.cyclic.app/auth/register",
       {
         method: "POST",
         body: formData,
@@ -74,11 +74,14 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("http://localhost:5000/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
+    const loggedInResponse = await fetch(
+      "https://erin-lucky-mite.cyclic.app/auth/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      }
+    );
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
 

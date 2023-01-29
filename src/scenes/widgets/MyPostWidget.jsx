@@ -44,7 +44,7 @@ const MyPostWidget = ({ picturePath }) => {
         formData.append("postPicturePath", image.name);
       }
 
-      const response = await fetch("http://localhost:5000/posts", {
+      const response = await fetch("https://erin-lucky-mite.cyclic.app/posts", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -127,6 +127,7 @@ const MyPostWidget = ({ picturePath }) => {
       ) : null}
       <Divider sx={{ margin: "1.25rem 0" }} />
       <FlexBetween>
+        {/*
         <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
           <ImageOutlined sx={{ color: mediumMain }} />
           <Typography
@@ -136,6 +137,7 @@ const MyPostWidget = ({ picturePath }) => {
             Image
           </Typography>
         </FlexBetween>
+        */}
         <Button
           disabled={!post}
           onClick={handlePost}

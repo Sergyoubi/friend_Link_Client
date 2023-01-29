@@ -8,7 +8,7 @@ const UserImage = ({ image, size = "60px" }) => {
         width={size}
         height={size}
         alt="user profile"
-        src={`http://localhost:5000/assets/${image}`}
+        src={`https://erin-lucky-mite.cyclic.app/assets/${image}`}
         // images are stored in backend Server; only Images's Name is sent from backend Server (then stored in global state),so we have to fetch it directly from Server.js
       />
     </Box>

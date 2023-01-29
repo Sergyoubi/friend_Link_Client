@@ -47,7 +47,7 @@ const PostWidget = ({
   const patchLike = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/posts/${postId}/like`,
+        `https://erin-lucky-mite.cyclic.app/posts/${postId}/like`,
         {
           method: "PATCH",
           headers: {
@@ -69,7 +69,7 @@ const PostWidget = ({
   const handleComment = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/posts/${postId}/comment`,
+        `https://erin-lucky-mite.cyclic.app/posts/${postId}/comment`,
         {
           method: "PATCH",
           headers: {
@@ -109,7 +109,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:5000/assets/${postPicturePath}`}
+          src={`https://erin-lucky-mite.cyclic.app/assets/${postPicturePath}`}
         />
       ) : null}
       <FlexBetween mt="0.25rem">
