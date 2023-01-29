@@ -75,7 +75,7 @@ const MyPostWidget = ({ picturePath }) => {
           sx={{
             "&:hover": {
               cursor: "pointer",
-              backgroundcolor: "#60a5fa",
+              backgroundcolor: "#0ea5e9",
             },
             borderRadius: "3rem",
             backgroundColor: "#38bdf8",
