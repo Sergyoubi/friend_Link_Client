@@ -30,6 +30,7 @@ const PostWidget = ({
   comments,
 }) => {
   const [isComments, setIsComments] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [comment, setComment] = useState("");
   const loggedInUserId = useSelector((state) => state.user._id);
   const token = useSelector((state) => state.token);
@@ -42,6 +43,7 @@ const PostWidget = ({
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
+  const dark = palette.neutral.dark;
 
   // fn() to increase/decrease the number of a One Post's Like
   const patchLike = async () => {
@@ -68,6 +70,7 @@ const PostWidget = ({
 
   const handleComment = async () => {
     try {
+      setIsPending(true);
       const response = await fetch(
         `https://erin-lucky-mite.cyclic.app/posts/${postId}/comment`,
         {
@@ -82,6 +85,9 @@ const PostWidget = ({
           }),
         }
       );
+      if (response) {
+        setIsPending(false);
+      }
       const updatedPost = await response.json();
       dispatch(setPost({ post: updatedPost }));
       setComment("");
@@ -144,11 +150,11 @@ const PostWidget = ({
             height: "2.7rem",
             borderRadius: "2rem",
             padding: "1rem 2rem",
-            backgroundColor: "#F0F0F0",
+            backgroundColor: palette.neutral.light,
           }}
         />
         <Button
-          disabled={!comment}
+          disabled={!comment || isPending}
           onClick={handleComment}
           sx={{
             "&:hover": {
@@ -159,23 +165,26 @@ const PostWidget = ({
             backgroundColor: "#38bdf8",
           }}
         >
-          <Typography color="#f1f5f9">POST</Typography>
+          <Typography color="#ffffff">
+            {isPending ? "Add...." : "Add"}
+          </Typography>
         </Button>
       </FlexBetween>
       {isComments ? (
         <Box mt="0.27rem">
           {comments.map((item) => (
             <Box
-              mt="0.26rem"
               key={`${item.name}-${item.comment}`}
               sx={{
                 width: "80%",
                 padding: "0.8rem 2rem",
-                backgroundColor: "#f8fafc",
+                backgroundColor: { dark },
               }}
             >
-              <Typography sx={{ fontWeight: "bold" }}>{item.name}</Typography>
-              <Typography sx={{ m: "0.5rem 0", pl: "1rem" }}>
+              <Typography color={dark} sx={{ fontWeight: "bold" }}>
+                {item.name}
+              </Typography>
+              <Typography color={dark} sx={{ m: "0.5rem 0", pl: "1rem" }}>
                 {item.comment}
               </Typography>
             </Box>

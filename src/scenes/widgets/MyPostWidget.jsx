@@ -18,16 +18,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 
 const MyPostWidget = ({ picturePath }) => {
+  const [isPending, setIsPending] = useState(false);
   const dispatch = useDispatch();
   // isImage will represent a switch if wether user clicked a button to open a place to drop image for his post
   const [post, setPost] = useState("");
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
+  const { firstName } = useSelector((state) => state.user);
   const medium = palette.neutral.medium;
 
   const handlePost = async () => {
     try {
+      setIsPending(true);
       const formData = new FormData();
       formData.append("userId", _id);
       formData.append("description", post);
@@ -38,6 +41,9 @@ const MyPostWidget = ({ picturePath }) => {
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
+      if (response) {
+        setIsPending(false);
+      }
       // the entire posts will be returned from back-end after a post is created
       const posts = await response.json();
       dispatch(setPosts({ posts }));
@@ -55,7 +61,7 @@ const MyPostWidget = ({ picturePath }) => {
       <FlexBetween gap="1.5rem">
         <UserImage image={picturePath} />
         <InputBase
-          placeholder="What's on your mind..."
+          placeholder={`What's on your mind ${firstName} ...`}
           onChange={(e) => setPost(e.target.value)}
           value={post}
           sx={{
@@ -63,14 +69,14 @@ const MyPostWidget = ({ picturePath }) => {
             height: "50%",
             borderRadius: "2rem",
             padding: "1rem 2rem",
-            backgroundColor: "#F0F0F0",
+            backgroundColor: palette.neutral.light,
           }}
         />
       </FlexBetween>
       <Divider sx={{ margin: "1.25rem 0" }} />
       <FlexBetween>
         <Button
-          disabled={!post}
+          disabled={!post || isPending}
           onClick={handlePost}
           sx={{
             "&:hover": {
@@ -81,11 +87,8 @@ const MyPostWidget = ({ picturePath }) => {
             backgroundColor: "#38bdf8",
           }}
         >
-          <Typography
-            color="#f1f5f9"
-            sx={{ "&:hover": { cursor: "pointer", color: medium } }}
-          >
-            POST
+          <Typography color="#ffffff">
+            {isPending ? "Posting...." : "Post"}
           </Typography>
         </Button>
       </FlexBetween>

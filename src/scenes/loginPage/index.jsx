@@ -28,7 +28,7 @@ const LoginPage = () => {
         borderRadius="1.5rem"
         backgroundcolor={theme.palette.background.alt}
       >
-        <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
+        <Typography fontWeight="500" fontSize="20px" sx={{ mb: "1.5rem" }}>
           Welcome to FriendLink!
         </Typography>
         <Form />

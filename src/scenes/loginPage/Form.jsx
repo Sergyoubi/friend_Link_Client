@@ -42,6 +42,7 @@ const initialValuesLogin = {
 
 const Form = () => {
   const [pageType, setPageType] = useState("login"); //display different form depending on this state
+  const [isPending, setIsPending] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width: 600px)");
@@ -49,6 +50,7 @@ const Form = () => {
   const isRegister = pageType === "register";
 
   const register = async (values, onSubmitProps) => {
+    setIsPending(true);
     // this allows us to send form info with image
     const formData = new FormData();
     for (let value in values) {
@@ -68,10 +70,12 @@ const Form = () => {
 
     if (savedUser) {
       setPageType("login");
+      setIsPending(false);
     }
   };
 
   const login = async (values, onSubmitProps) => {
+    setIsPending(true);
     const loggedInResponse = await fetch(
       "https://erin-lucky-mite.cyclic.app/auth/login",
       {
@@ -85,6 +89,7 @@ const Form = () => {
 
     // User data are saved in global state here
     if (loggedIn) {
+      setIsPending(false);
       dispatch(
         setLogin({
           user: loggedIn.user,
@@ -193,7 +198,13 @@ const Form = () => {
               }}
             />
             <TextField
-              label="Password"
+              label={
+                isRegister ? (
+                  <span>Password must be 8 characters minimun</span>
+                ) : (
+                  <span>Password</span>
+                )
+              }
               type="password"
               onBlur={handleBlur}
               onChange={handleChange}
@@ -210,8 +221,10 @@ const Form = () => {
           <Box>
             <Button
               fullWidth
+              disabled={isPending}
               type="submit"
               sx={{
+                height: "4rem",
                 m: "2rem 0",
                 p: "1rem",
                 backgroundColor: "#38bdf8",
@@ -219,9 +232,13 @@ const Form = () => {
               }}
             >
               {isLogin ? (
-                <Typography sx={{ color: "#FFFFFF" }}>LOGIN</Typography>
+                <Typography sx={{ color: "#FFFFFF" }}>
+                  {isPending ? "LOGIN..." : "LOGIN"}
+                </Typography>
               ) : (
-                <Typography sx={{ color: "#FFFFFF" }}>REGISTER</Typography>
+                <Typography sx={{ color: "#FFFFFF" }}>
+                  {isPending ? "REGISTERING ...." : "REGISTER"}
+                </Typography>
               )}
             </Button>
             <Typography
