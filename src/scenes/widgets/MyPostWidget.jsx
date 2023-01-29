@@ -1,9 +1,5 @@
 // this is where posts are created.
-import {
-  EditOutlined,
-  DeleteOutlined,
-  ImageOutlined,
-} from "@mui/icons-material";
+import { EditOutlined, DeleteOutlined } from "@mui/icons-material";
 import {
   Box,
   Divider,
@@ -30,7 +26,6 @@ const MyPostWidget = ({ picturePath }) => {
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
-  const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
 
   const handlePost = async () => {

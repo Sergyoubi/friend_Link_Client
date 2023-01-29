@@ -4,7 +4,6 @@ import {
   TextField,
   useMediaQuery,
   Typography,
-  useTheme,
 } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -43,7 +42,6 @@ const initialValuesLogin = {
 
 const Form = () => {
   const [pageType, setPageType] = useState("login"); //display different form depending on this state
-  const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width: 600px)");
@@ -180,13 +178,6 @@ const Form = () => {
                     gridColumn: "span 4",
                   }}
                 />
-                {/* box for profile image */}
-                <Box
-                  gridColumn="span 4"
-                  border={`1px solid ${palette.neutral.medium}`}
-                  borderRadius="5px"
-                  p="1rem"
-                ></Box>
               </>
             )}
             <TextField
