@@ -32,10 +32,6 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append("userId", _id);
       formData.append("description", post);
       // a post may contain image or not so we check it here
-      if (image) {
-        formData.append("picture", image);
-        formData.append("postPicturePath", image.name);
-      }
 
       const response = await fetch("https://erin-lucky-mite.cyclic.app/posts", {
         method: "POST",
