@@ -1,15 +1,11 @@
 // this is where posts are created.
-import { EditOutlined, DeleteOutlined } from "@mui/icons-material";
 import {
-  Box,
   Divider,
   Typography,
   InputBase,
   useTheme,
   Button,
-  IconButton,
 } from "@mui/material";
-import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 import UserImage from "components/UserImage";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -26,7 +22,6 @@ const MyPostWidget = ({ picturePath }) => {
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const { firstName } = useSelector((state) => state.user);
-  const medium = palette.neutral.medium;
 
   const handlePost = async () => {
     try {

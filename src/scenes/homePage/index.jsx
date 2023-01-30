@@ -1,12 +1,19 @@
 import { Box, useMediaQuery } from "@mui/material";
 import { useSelector } from "react-redux";
 import Navbar from "scenes/navbar";
-import UserWidget from "scenes/widgets/UserWidget";
-import MyPostWidget from "scenes/widgets/MyPostWidget";
-import PostsWidget from "scenes/widgets/PostsWidget";
-import AdvertWidget from "scenes/widgets/AdvertWidget";
-import FriendListWidget from "scenes/widgets/FriendListWidget";
-import { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
+import UserWidgetSkeleton from "components/skleleton/UserWidgetSkeleton";
+import CreatePostSkeleton from "components/skleleton/CreatePostSkeleton";
+import PostWidgetSkeleton from "components/skleleton/PostWidgetSkeleton";
+import AdvertWidgetSkeleton from "components/skleleton/AdvertWidgetSkeleton";
+import FriendListWidgetSkeleton from "components/skleleton/FriendListWidgetSkeleton";
+const UserWidget = React.lazy(() => import("scenes/widgets/UserWidget"));
+const MyPostWidget = React.lazy(() => import("scenes/widgets/MyPostWidget"));
+const PostsWidget = React.lazy(() => import("scenes/widgets/PostsWidget"));
+const AdvertWidget = React.lazy(() => import("scenes/widgets/AdvertWidget"));
+const FriendListWidget = React.lazy(() =>
+  import("scenes/widgets/FriendListWidget")
+);
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
@@ -26,20 +33,30 @@ const HomePage = () => {
         justifyContent="space-between"
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
-          <UserWidget userId={_id} picturePath={picturePath} />
+          <Suspense fallback={<UserWidgetSkeleton />}>
+            <UserWidget userId={_id} picturePath={picturePath} />
+          </Suspense>
         </Box>
         <Box
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
-          <MyPostWidget picturePath={picturePath} />
-          <PostsWidget userId={_id} />
+          <Suspense fallback={<CreatePostSkeleton />}>
+            <MyPostWidget picturePath={picturePath} />
+          </Suspense>
+          <Suspense fallback={<PostWidgetSkeleton />}>
+            <PostsWidget userId={_id} />
+          </Suspense>
         </Box>
         {isNonMobileScreens && (
           <Box flexBasis="26%">
-            <AdvertWidget />
+            <Suspense fallback={<AdvertWidgetSkeleton />}>
+              <AdvertWidget />
+            </Suspense>
             <Box margin="2rem 0" />
-            <FriendListWidget userId={_id} />
+            <Suspense fallback={<FriendListWidgetSkeleton />}>
+              <FriendListWidget userId={_id} />
+            </Suspense>
           </Box>
         )}
       </Box>

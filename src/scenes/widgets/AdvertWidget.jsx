@@ -17,7 +17,7 @@ const AdvertWidget = () => {
       </FlexBetween>
 
       <img
-        src={"https://erin-lucky-mite.cyclic.app/assets/shampoo.jpeg"}
+        src="../assets/shampoo.jpeg"
         alt="advert"
         width="100%"
         height="auto"
