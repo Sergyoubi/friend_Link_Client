@@ -5,16 +5,19 @@ import { Box, Typography, Divider, useTheme } from "@mui/material";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { setFriends } from "state";
 
 // This is where the user info are displayed
 const UserWidget = ({ userId, picturePath }) => {
+  const dispatch = useDispatch();
   const { palette } = useTheme();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const token = useSelector((state) => state.token);
+  const { friends } = useSelector((state) => state.user);
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
@@ -36,15 +39,27 @@ const UserWidget = ({ userId, picturePath }) => {
       );
     }
   };
+  const getFriends = async () => {
+    const response = await fetch(
+      `http://localhost:5000/users/${userId}/friends`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const data = await response.json();
+    dispatch(setFriends({ friends: data }));
+  };
 
   useEffect(() => {
     getUserInfo();
+    getFriends();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // "user" doesn't exist until getUserInfo() returns data! destructuring the "user object" will return an error if not checked like bellow
   if (!user) return null;
 
-  const { firstName, lastName, location, occupation, friends } = user;
+  const { firstName, lastName, location, occupation } = user;
 
   return (
     <WidgetWrapper>

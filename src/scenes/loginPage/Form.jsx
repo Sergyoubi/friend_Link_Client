@@ -50,53 +50,65 @@ const Form = () => {
   const isRegister = pageType === "register";
 
   const register = async (values, onSubmitProps) => {
-    setIsPending(true);
-    // this allows us to send form info with image
-    const formData = new FormData();
-    for (let value in values) {
-      formData.append(value, values[value]);
-    }
-    formData.append("picturePath", "user.png");
-
-    const savedUserResponse = await fetch(
-      "https://erin-lucky-mite.cyclic.app/auth/register",
-      {
-        method: "POST",
-        body: formData,
+    try {
+      setIsPending(true);
+      // this allows us to send form info with image
+      const formData = new FormData();
+      for (let value in values) {
+        formData.append(value, values[value]);
       }
-    );
-    const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
+      formData.append("picturePath", "user.png");
 
-    if (savedUser) {
-      setPageType("login");
-      setIsPending(false);
+      const savedUserResponse = await fetch(
+        "https://erin-lucky-mite.cyclic.app/auth/register",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const savedUser = await savedUserResponse.json();
+      onSubmitProps.resetForm();
+
+      if (savedUser) {
+        setPageType("login");
+        setIsPending(false);
+      }
+    } catch (error) {
+      if (error.response.status === 500) {
+        setIsPending(false);
+      }
     }
   };
 
   const login = async (values, onSubmitProps) => {
-    setIsPending(true);
-    const loggedInResponse = await fetch(
-      "https://erin-lucky-mite.cyclic.app/auth/login",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      }
-    );
-    const loggedIn = await loggedInResponse.json();
-    onSubmitProps.resetForm();
-
-    // User data are saved in global state here
-    if (loggedIn) {
-      setIsPending(false);
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
+    try {
+      setIsPending(true);
+      const loggedInResponse = await fetch(
+        "https://erin-lucky-mite.cyclic.app/auth/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        }
       );
-      navigate("/home");
+      const loggedIn = await loggedInResponse.json();
+      onSubmitProps.resetForm();
+
+      // User data are saved in global state here
+      if (loggedIn) {
+        setIsPending(false);
+        dispatch(
+          setLogin({
+            user: loggedIn.user,
+            token: loggedIn.token,
+          })
+        );
+        navigate("/home");
+      }
+    } catch (error) {
+      if (error.response.status === 400) {
+        setIsPending(false);
+      }
     }
   };
 
