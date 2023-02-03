@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme.js";
+import NotFound from "scenes/notFound/index.js";
 
 const App = () => {
   const mode = useSelector((state) => state.mode);
@@ -29,6 +30,7 @@ const App = () => {
             path="/profile/:userId"
             element={isAuthenticated ? <ProfilePage /> : <LoginPage />}
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>
